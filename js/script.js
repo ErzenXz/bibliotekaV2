@@ -107,8 +107,8 @@ function addBook() {
 
 function showVersion(){
         Swal.fire(
-            'Biblioteka e qytetit!',
-            'Biblioteka e qytetit po vepron ne versionin 2.0 Beta.',
+            'System Information!',
+            'Biblioteka e qytetit po vepron ne versionin 2.0',
             'info'
             );
 }

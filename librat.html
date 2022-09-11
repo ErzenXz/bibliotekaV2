@@ -24,6 +24,23 @@
 
 
 <body onload="startQuery()">
+
+    <div class="lds-spinner" id="loading">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+
     <header>
         <ul class="blur" id="blur">
 
@@ -44,7 +61,7 @@
         </ul>
     </header>
 
-    <div class="container">
+    <div class="container hidden" id="up">
         <div class="row">
             <div class="col-sm-4 mb-4">
                 <input type="text" id="myFilter" class="form-control search" onkeyup="searchQuery(this.value)"
@@ -61,7 +78,7 @@
     </div>
 
 
-    <div class="author">
+    <div class="author hidden" id="bottom">
         <pre>ErzenK     All rights reserved      2022©</pre>
     </div>
 

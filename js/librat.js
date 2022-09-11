@@ -15,7 +15,10 @@ let others = [];
 let searchIndex = [];
 
 function doDynamic(){
-    items = items + 4;
+    items = items + 8;
+
+    document.getElementById("loading").style.display = "inline-block";
+
     query.limitToLast(1 * items).on('child_added', function (snap) {
     // Get the messages
     let bname = snap.val().bookname;
@@ -29,8 +32,15 @@ function doDynamic(){
     }
 
     others.push(postKey);
-    createBook(bname, bdesc, bauthor, bimage, postKey);    
-    })
+    createBook(bname, bdesc, bauthor, bimage, postKey);
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("up").classList.remove("hidden");
+    document.getElementById("bottom").classList.remove("hidden");  
+    });
+
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("up").classList.remove("hidden");
+    document.getElementById("bottom").classList.remove("hidden");  
 }
 
 const worker = new Worker('./js/query.js');
@@ -69,6 +79,9 @@ query.limitToFirst(items).on("child_added", function (snapshot) {
     let postKey = snapshot.key;
     others.push(postKey);
     createBook(bname, bdesc, bauthor, bimage, postKey);
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("up").classList.remove("hidden");
+    document.getElementById("bottom").classList.remove("hidden");  
 });
 
 

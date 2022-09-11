@@ -147,6 +147,7 @@ db.collection("books").get().then((querySnapshot) => {
         let ms = doc.data().ms;
         let time = doc.data().time;
         let key = doc.id;
+        bdecs = bdecs.replace(/["']/g, "");
 
         addBookToUL(name, email, bname, bauthor, bdecs, bimage, ms, time, key);
     });
@@ -166,7 +167,7 @@ function addBookToUL(name, email, bname, bauthor, bdecs, bimage, btime, bt, key)
     li.setAttributeNode(att1);
     li.setAttributeNode(att2);
 
-    li.innerHTML = `<b>${bname}</b>      - by ${name} (${email}) - ${time_ago(btime)} <button onclick="openMenu('${name}','${email}','${bname}', '${bauthor}', '${bdecs}}', '${bimage}', '${btime}', '${bt}', '${key}')">Details</button>`;
+    li.innerHTML = `<b>${bname}</b>      - by ${name} (${email}) - ${time_ago(btime)} <button onclick="openMenu('${name}','${email}','${bname}', '${bauthor}', '${bdecs}', '${bimage}', '${btime}', '${bt}', '${key}')">Details</button>`;
 
     ul.appendChild(li);
 }
