@@ -2,7 +2,7 @@
 
 
 
-const query = firebase.database().ref('books/').orderByChild("bookname");
+const query = firebase.database().ref('movies/').orderByChild("bookname");
 
 // Check if the user is logged in
 firebase.auth().onAuthStateChanged(function (e) { e ? (email = e.email, uid = e.uid) : document.getElementById("logout-id").style.display = "none" });
@@ -14,38 +14,38 @@ let items = 8;
 let others = [];
 let searchIndex = [];
 
-function doDynamic(){
+function doDynamic() {
     items = items + 8;
 
     document.getElementById("loading").style.display = "inline-block";
 
     query.limitToLast(1 * items).on('child_added', function (snap) {
-    // Get the messages
-    let bname = snap.val().bookname;
-    let bdesc = snap.val().bookdesc;
-    let bauthor = snap.val().bookauthor;
-    let bimage = snap.val().bookimage;
-    let postKey = snap.key;
+        // Get the messages
+        let bname = snap.val().bookname;
+        let bdesc = snap.val().bookdesc;
+        let bauthor = snap.val().bookauthor;
+        let bimage = snap.val().bookimage;
+        let postKey = snap.key;
 
-    if(others.includes(postKey)){
-        return false;
-    }
+        if (others.includes(postKey)) {
+            return false;
+        }
 
-    others.push(postKey);
-    createBook(bname, bdesc, bauthor, bimage, postKey);
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("up").classList.remove("hidden");
-    document.getElementById("bottom").classList.remove("hidden");  
+        others.push(postKey);
+        createBook(bname, bdesc, bauthor, bimage, postKey);
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("up").classList.remove("hidden");
+        document.getElementById("bottom").classList.remove("hidden");
     });
 
     document.getElementById("loading").style.display = "none";
     document.getElementById("up").classList.remove("hidden");
-    document.getElementById("bottom").classList.remove("hidden");  
+    document.getElementById("bottom").classList.remove("hidden");
 }
 
 const worker = new Worker('./js/query.js');
 
-function startQuery(){
+function startQuery() {
     //worker.postMessage("hey");
 }
 
@@ -55,6 +55,7 @@ query.on("child_added", function (snap) {
     let bdesc = snap.val().bookdesc;
     let bauthor = snap.val().bookauthor;
     let bimage = snap.val().bookimage;
+    let bvideo = snap.val().bookvideo;
     let postKey = snap.key;
 
     bname = bname.toString().toLowerCase();
@@ -64,6 +65,7 @@ query.on("child_added", function (snap) {
         "book_description": bdesc,
         "book_author": bauthor,
         "book_image_url": bimage,
+        "book_video_url": bvideo,
         "book_key": postKey
     };
     searchIndex.push(data);
@@ -76,25 +78,27 @@ query.limitToFirst(items).on("child_added", function (snapshot) {
     let bdesc = snapshot.val().bookdesc;
     let bauthor = snapshot.val().bookauthor;
     let bimage = snapshot.val().bookimage;
+    let video = snapshot.val().bookvideo;
     let postKey = snapshot.key;
     others.push(postKey);
-    createBook(bname, bdesc, bauthor, bimage, postKey);
+    createBook(bname, bdesc, bauthor, bimage, postKey, video);
     document.getElementById("loading").style.display = "none";
     document.getElementById("up").classList.remove("hidden");
-    document.getElementById("bottom").classList.remove("hidden");  
+    document.getElementById("bottom").classList.remove("hidden");
 });
 
 
-function lookBook(name, description, author, image, key) {
+function lookBook(name, description, author, image, key, video) {
     localStorage.setItem("name", name);
     localStorage.setItem("description", description);
     localStorage.setItem("author", author);
     localStorage.setItem("image", image);
+    localStorage.setItem("video", video);
     localStorage.setItem("key", key);
-    location.href = "./info.html";
+    location.href = "./play.html";
 }
 
-function createBook(name, description, author, image, key) {
+function createBook(name, description, author, image, key, video) {
 
     let mainD = document.getElementById("myProducts");
 
@@ -159,8 +163,8 @@ function createBook(name, description, author, image, key) {
     let onClickA = document.createAttribute("onclick");
     aHref.value = "#loading-book-info";
     aClass.value = "btn btn-primary";
-    onClickA.value = `lookBook("${name}", "${description}", "${author}", "${image}", "${key}")`;
-    a1.innerText = "Shiko";
+    onClickA.value = `lookBook("${name}", "${description}", "${author}", "${image}", "${key}", "${video}")`;
+    a1.innerText = "Watch";
     a1.setAttributeNode(aHref);
     a1.setAttributeNode(aClass);
     a1.setAttributeNode(onClickA);
@@ -179,7 +183,7 @@ function createBook(name, description, author, image, key) {
             let onClickA3 = document.createAttribute("onclick");
             a3Href.value = `#promoting-${key}`;
             a3Class.value = "btn btn-success deleteB";
-            onClickA3.value = `promoteBook("${name}", "${description}", "${author}", "${image}", "${key}")`;
+            onClickA3.value = `promoteBook("${name}", "${description}", "${author}", "${image}", "${key}", "${video}")`;
             a3.innerText = "Promote";
             a3.setAttributeNode(a3Href);
             a3.setAttributeNode(a3Class);
@@ -227,7 +231,7 @@ function deletebook(key) {
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: "The book (" + key + ") was deleted.",
+                title: "The movie (" + key + ") was deleted.",
                 showConfirmButton: false,
                 timer: 1500
             })
@@ -235,26 +239,26 @@ function deletebook(key) {
     })
 }
 
-function promoteBook(name, description, author, image, key) {
+function promoteBook(name, description, author, image, key, video) {
     const database = firebase.database().ref();
 
     let t = new Date();
     // Get the data
     let likes = 0;
     let sender = "Admin";
-    let time = t.getDay() + "/" + t.getMonth() + "/" + t.getFullYear();
-    data = { author, description, image, likes, name, sender, time }
-    database.child("ads/-MsVkD5VMlCr50aBprPG").update(data);
+    let time = t.getTime();
+    data = { author, description, image, name, video, likes, sender, time, key }
+    database.child("movies-ads/a1b2c3/").update(data);
     Swal.fire({
         position: 'top-end',
         icon: 'success',
-        title: "Libri (" + name + ") sapo u promovua!",
+        title: "Movie (" + name + ") has been advertised!",
         showConfirmButton: false,
         timer: 7500
     })
 }
 
-firebase.database().ref("books/").on("child_removed", function (snapshot) {
+firebase.database().ref("movies/").on("child_removed", function (snapshot) {
     setTimeout(() => {
         document.getElementById(`uuid-${snapshot.key}-0`).style.transition = "all 0.3s ease-in-out";
         document.getElementById(`uuid-${snapshot.key}-0`).style.opacity = "0.8";
@@ -288,13 +292,13 @@ function searchBook() {
 }
 
 
-function searchQuery(text){
+function searchQuery(text) {
     let object = search(text);
     document.getElementById("searchRes").innerHTML = "";
-    for(let i = 0; i < object.length; i++){
-        if(object.length > 75){
+    for (let i = 0; i < object.length; i++) {
+        if (object.length > 75) {
             document.getElementById("searchRes").innerHTML = `
-            <li onclick="lookBook('${object[i].book_name}','${object[i].book_description}','${object[i].book_author}','${object[i]. book_image_url}','${object[i].book_key}')"><img src="${object[i].book_image_url}" width="auto" height="50px" alt="${object[i].book_name}">${object[i].book_name}</li>
+            <li onclick="lookBook('${object[i].book_name}','${object[i].book_description}','${object[i].book_author}','${object[i].book_image_url}','${object[i].book_key}')"><img src="${object[i].book_image_url}" width="auto" height="50px" alt="${object[i].book_name}">${object[i].book_name}</li>
         `;
         }
         document.getElementById("searchRes").innerHTML += `
@@ -305,20 +309,20 @@ function searchQuery(text){
 }
 
 
-function search(text){
-    if(undefined === text || text === '' ) return false;
+function search(text) {
+    if (undefined === text || text === '') return false;
 
     text = text.toString().toLowerCase();
 
     return searchIndex.filter(product => {
         let flag;
-        for(let prop in product){
+        for (let prop in product) {
             flag = false;
             flag = product[prop].toString().indexOf(text) > -1;
-            if(flag)
-            break;
+            if (flag)
+                break;
         }
 
-    return flag;
-});
+        return flag;
+    });
 }
