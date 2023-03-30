@@ -15,3 +15,7 @@ Veqorit e uebfaqes
 Version 2.0
 
 
+<<<<<<< HEAD
+=======
+# movies
+>>>>>>> parent of 4d5d61a... first commit
