@@ -16,6 +16,9 @@ Version 2.0
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 # movies
 >>>>>>> parent of 4d5d61a... first commit
+=======
+>>>>>>> parent of 67beee5... added readme
