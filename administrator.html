@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Librat • Bibloteka</title>
+    <title>Movies • Administrator</title>
     <link href="https://cdn-erzen.netlify.app/fonts/Nunito.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -25,12 +25,10 @@
             <li class="list-left"><a href="./index.html" class="fas fa-home" title="Home">
                     <span class="textNav">Home</span>
                 </a></li>
-            <li class="list-left"><a href="librat.html" class="fa fa-book" title="Books">
-                    <span class="textNav">Books</span>
+            <li class="list-left"><a href="movies.html" class="fa-solid fa-film" title="Movies">
+                    <span class="textNav">Movies</span>
                 </a></li>
-            <li class="list-left"><a href="https://erzenchat.netlify.app/" class="fas fa-envelope" title="Messeges">
-                    <span class="textNav">Chat</span>
-                </a></li>
+
             <li class="list-right" id="logout-id"><a onclick="logout()" class="fas fa-sign-out-alt" title="Log out">
                     <span>Log out</span>
                 </a>
@@ -44,12 +42,13 @@
         <div class="container">
             <div class="row">
                 <div class="col leftbox">
-                    <h1>Shtoni një libër</h1><br>
-                    <input type="text" name="bookname" placeholder="Emri i librit" id="bookname"><br>
-                    <input type="text" name="bookdesc" placeholder="Përshkrimi i librit" id="bookdesc"><br>
-                    <input type="text" name="bookauthor" placeholder="Autori i librit" id="bookauthor"><br>
-                    <input type="text" name="bookimage" placeholder="Linku i fotos" id="bookimage"><br>
-                    <input type="button" name="addbook" value="Shtoni librin" id="addbook" onclick="addBook()">
+                    <h1>Add Movie</h1><br>
+                    <input type="text" name="bookname" placeholder="Movie title" id="bookname"><br>
+                    <input type="text" name="bookdesc" placeholder="Movie description" id="bookdesc"><br>
+                    <input type="text" name="bookauthor" placeholder="Movie author" id="bookauthor"><br>
+                    <input type="text" name="bookimage" placeholder="Image link" id="bookimage"><br>
+                    <input type="text" name="bookvideo" placeholder="Video link" id="bookvideo"><br>
+                    <input type="button" name="addbook" value="Add Movie" id="addbook" onclick="addBook()">
                 </div>
                 <div class="col rightbox">
                     <!--
@@ -58,7 +57,7 @@
 
                 <input type="button" name="removebook" value="Fshini librin" id="removebook" onclick="removeBook()">
                 -->
-                    <h1>Menagjeri i faqes</h1><br>
+                    <h1>Website Administrator</h1><br>
                     <input type="button" name="changepassword" value="Ndryshoni passwordin" id="changepassword"
                         onclick="changePassword()"><br>
                     <input type="button" name="pagestats" value="Statistikat e faqes" id="pagestats"
@@ -74,7 +73,7 @@
 
         <br><br><br><br>
 
-        <h1 class="approve">Aprovimi i librave</h1><br>
+        <h1 class="approve">Movie Suggestions</h1><br>
 
         <div class="verifyBooks">
             <ul id="ul">
@@ -106,6 +105,10 @@
             </div>
             <div>
                 <p id="bookImage"></p>
+            </div>
+            <br>
+            <div>
+                <p id="bookVideo"></p>
             </div>
             <div class="buttons">
                 <button id="but1" class="buttonA">Approve</button>
